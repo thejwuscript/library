@@ -14,8 +14,12 @@ const bookTwo = {
 
 let myLibrary = [bookOne, bookTwo];
 
-function Book() {
+function Book(title, author, pages, read) {
   // the constructor...
+  this.title = title
+  this.author = author
+  this.pages = pages
+  this.read = read
 }
 
 function addBookToLibrary() {
@@ -24,8 +28,6 @@ function addBookToLibrary() {
 
 function displayBooks(array) {
   const table = document.querySelector('table')
-
-
   for (i = 0; i < array.length; i++) {
     let tempRow = document.createElement('tr')
     let tempIndex = document.createElement('th')
@@ -39,5 +41,22 @@ function displayBooks(array) {
       tempRow.appendChild(tempCell)
     }
     table.insertAdjacentElement('beforeend', tempRow)
+  }
+}
+
+const newButton = document.getElementById('new_book_button')
+newButton.addEventListener('click', newForm)
+
+const form = document.createElement('form');
+  form.innerHTML = '<label for="title">Title</label>' + '<input type="text" id="title" name="title" placeholder="Title"><br>' + 
+  '<label for="author">Author</label>' + '<input type="text" id="author" name="author" placeholder="Author"><br>' +
+  '<label for="pages">Pages</label>' + '<input type="number" id="pages" name="pages" placeholder="Pages"><br>' +
+  '<label for="read">Read</label>' + '<input type="checkbox" id="read" name="read">' + '<br>' + '<button type="submit">Submit</button>'
+
+function newForm() {
+  if (document.querySelector('form')) {
+    document.querySelector('form').reset()
+  } else {
+    newButton.insertAdjacentElement('afterend', form)
   }
 }

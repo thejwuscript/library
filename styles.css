@@ -21,3 +21,8 @@ td {
 caption {
   padding: 10px;
 }
+
+form {
+  margin: 30px;
+  border: 1px solid black;
+}
