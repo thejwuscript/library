@@ -42,6 +42,7 @@ function displayBooks(array) {
       tempCell.textContent = book[key]
       tempRow.appendChild(tempCell)
     }
+    AttachRemoveButton(tempRow, book)
     tableBody.appendChild(tempRow)
     let oldChild = document.querySelector('tbody').childNodes[i+1]
     if (oldChild) {
@@ -51,15 +52,6 @@ function displayBooks(array) {
     }
   }
 }
-
-const newButton = document.getElementById('new_book_button')
-newButton.addEventListener('click', newForm)
-
-const form = document.createElement('form');
-  form.innerHTML = '<label for="title">Title</label>' + '<input type="text" id="title" name="title" placeholder="Title"><br>' + 
-  '<label for="author">Author</label>' + '<input type="text" id="author" name="author" placeholder="Author"><br>' +
-  '<label for="pages">Pages</label>' + '<input type="number" id="pages" name="pages" placeholder="Pages"><br>' +
-  '<label for="read">Read</label>' + '<input type="checkbox" id="read" name="read">' + '<br>' + '<button class="submit" type="submit">Submit</button>'
 
 function newForm() {
   if (document.querySelector('form')) {
@@ -80,5 +72,24 @@ function attachListenerToNewBookButton() {
     addBookToLibrary(title, author, pages, read);
   })
 }
+
+function AttachRemoveButton(rowElement, book) {
+    let removeBtn = document.createElement('button')
+    removeBtn.textContent = 'Remove'
+    removeBtn.addEventListener('click', () => {
+      myLibrary.splice(myLibrary.indexOf(book), 1)
+      rowElement.remove()
+      displayBooks(myLibrary)
+    })
+    rowElement.appendChild(removeBtn)
+}
+
+document.getElementById('new_book_button').addEventListener('click', newForm)
+
+const form = document.createElement('form');
+  form.innerHTML = '<label for="title">Title</label>' + '<input type="text" id="title" name="title" placeholder="Title"><br>' + 
+  '<label for="author">Author</label>' + '<input type="text" id="author" name="author" placeholder="Author"><br>' +
+  '<label for="pages">Pages</label>' + '<input type="number" id="pages" name="pages" placeholder="Pages"><br>' +
+  '<label for="read">Read</label>' + '<input type="checkbox" id="read" name="read">' + '<br>' + '<button class="submit" type="submit">Submit</button>'
 
 displayBooks(myLibrary);
