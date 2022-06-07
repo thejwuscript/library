@@ -22,17 +22,19 @@ function Book(title, author, pages, read) {
   this.read = read
 }
 
-function addBookToLibrary() {
-  // do stuff here
+function addBookToLibrary(title, author, pages, read) {
+  let newBook = new Book(title, author, pages, read)
+  myLibrary.push(newBook)
+  displayBooks(myLibrary)
+  newForm()
 }
 
 function displayBooks(array) {
-  const table = document.querySelector('table')
+  const tableBody = document.querySelector('tbody')
   for (i = 0; i < array.length; i++) {
     let tempRow = document.createElement('tr')
     let tempIndex = document.createElement('th')
-    let num = document.querySelectorAll('tr').length
-    tempIndex.textContent = num
+    tempIndex.textContent = i + 1
     tempRow.appendChild(tempIndex)
     let book = array[i]
     for (let key in book) {
@@ -40,7 +42,13 @@ function displayBooks(array) {
       tempCell.textContent = book[key]
       tempRow.appendChild(tempCell)
     }
-    table.insertAdjacentElement('beforeend', tempRow)
+    tableBody.appendChild(tempRow)
+    let oldChild = document.querySelector('tbody').childNodes[i+1]
+    if (oldChild) {
+      tableBody.replaceChild(tempRow, oldChild)
+    } else {
+      tableBody.appendChild(tempRow)
+    }
   }
 }
 
@@ -51,12 +59,26 @@ const form = document.createElement('form');
   form.innerHTML = '<label for="title">Title</label>' + '<input type="text" id="title" name="title" placeholder="Title"><br>' + 
   '<label for="author">Author</label>' + '<input type="text" id="author" name="author" placeholder="Author"><br>' +
   '<label for="pages">Pages</label>' + '<input type="number" id="pages" name="pages" placeholder="Pages"><br>' +
-  '<label for="read">Read</label>' + '<input type="checkbox" id="read" name="read">' + '<br>' + '<button type="submit">Submit</button>'
+  '<label for="read">Read</label>' + '<input type="checkbox" id="read" name="read">' + '<br>' + '<button class="submit" type="submit">Submit</button>'
 
 function newForm() {
   if (document.querySelector('form')) {
     document.querySelector('form').reset()
   } else {
     newButton.insertAdjacentElement('afterend', form)
+    attachListenerToNewBookButton()
   }
 }
+
+function attachListenerToNewBookButton() {
+  document.querySelector('.submit').addEventListener('click', function(e) {
+    e.preventDefault()
+    let title = document.getElementById('title').value
+    let author = document.getElementById('author').value
+    let pages = document.getElementById('pages').value
+    let read = document.getElementById('read').checked
+    addBookToLibrary(title, author, pages, read);
+  })
+}
+
+displayBooks(myLibrary);
