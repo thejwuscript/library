@@ -39,10 +39,17 @@ function displayBooks(array) {
     let book = array[i]
     for (let key in book) {
       let tempCell = document.createElement('td')
-      tempCell.textContent = book[key]
+      if (book[key] === true) {
+        tempCell.textContent = 'Yes'
+      } else if (book[key] === false) {
+        tempCell.textContent = 'No'
+      } else {
+        tempCell.textContent = book[key]
+      }
       tempRow.appendChild(tempCell)
     }
     AttachRemoveButton(tempRow, book)
+    AttachReadButton(tempRow, book)
     tableBody.appendChild(tempRow)
     let oldChild = document.querySelector('tbody').childNodes[i+1]
     if (oldChild) {
@@ -84,7 +91,28 @@ function AttachRemoveButton(rowElement, book) {
     rowElement.appendChild(removeBtn)
 }
 
-document.getElementById('new_book_button').addEventListener('click', newForm)
+function AttachReadButton(rowElement, book) {
+  // create an element for the read button
+  let readBtn = document.createElement('button')
+  // assign text content of read button to be 'Read'
+  readBtn.textContent = 'Read'
+  // set an attribute type of the read button to be 'button'
+  readBtn.setAttribute('type', 'button')
+  // add event listener to read button that toggles the read property of the book object
+  readBtn.addEventListener('click', () => {
+    if (book.read) {
+      book.read = false
+    } else {
+      book.read = true
+    }
+    displayBooks(myLibrary)
+  })
+  // add the read button to the row element
+  rowElement.appendChild(readBtn)
+}
+
+const newButton = document.getElementById('new_book_button')
+newButton.addEventListener('click', newForm)
 
 const form = document.createElement('form');
   form.innerHTML = '<label for="title">Title</label>' + '<input type="text" id="title" name="title" placeholder="Title"><br>' + 
